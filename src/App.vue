@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- ツールバー -->
-    <v-app-bar app color="green" dark>
+    <v-app-bar app color="blue" dark>
       <!-- タイトル -->
       <v-toolbar-title>GAS 家計簿</v-toolbar-title>
       <v-spacer></v-spacer>
