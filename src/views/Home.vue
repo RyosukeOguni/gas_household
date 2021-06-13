@@ -69,6 +69,34 @@
         :items-per-page="30"
         mobile-breakpoint="0"
       >
+        <!-- 日付列 -->
+        <!-- この中で、日付は item.date でアクセスできる -->
+        <template v-slot:[`item.date`]="{ item }">
+          <!-- '2020-06-01'.slice(-2) → 01-->
+          <!-- parseInt(01) + '日'  → '1日' -->
+          {{ parseInt(item.date.slice(-2)) + '日' }}
+        </template>
+        <!-- タグ列 -->
+        <template #[`item.tags`]="{ item }">
+          <div v-if="item.tags">
+            <v-chip class="mr-2" v-for="(tag, i) in item.tags.split(',')" :key="i">
+              {{ tag }}
+            </v-chip>
+          </div>
+        </template>
+        <!-- 収入列 -->
+        <template #item.income="{ item }">
+          {{ separate(item.income) }}
+        </template>
+        <!-- 支出列 -->
+        <template v-slot:item.outgo="{ item }">
+          {{ separate(item.outgo) }}
+        </template>
+        <!-- 操作列 -->
+        <template v-slot:item.actions="{}">
+          <v-icon class="mr-2">mdi-pencil</v-icon>
+          <v-icon>mdi-delete</v-icon>
+        </template>
       </v-data-table>
     </v-card>
   </div>
@@ -137,6 +165,16 @@ export default {
     /** テーブルのフッター設定 */
     footerProps() {
       return { itemsPerPageText: '', itemsPerPageOptions: [] }
+    },
+  },
+
+  methods: {
+    /**
+     * 数字を3桁区切りにして返します。
+     * 受け取った数が null のときは null を返します。
+     */
+    separate(num) {
+      return num !== null ? num.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,') : null
     },
   },
 }
