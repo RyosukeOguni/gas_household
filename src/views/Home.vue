@@ -33,14 +33,16 @@
             >
               <v-spacer />
               <v-btn text color="grey" @click="menu = false">キャンセル</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(yearMonth)">選択</v-btn>
+              <v-btn text color="primary" @click="$refs.menu.save(yearMonth)"
+                >選択</v-btn
+              >
             </v-date-picker>
           </v-menu>
         </v-col>
         <v-spacer />
         <!-- 追加ボタン -->
         <v-col class="text-right" cols="4">
-          <v-btn dark color="green">
+          <v-btn dark color="green" @click="onClickAdd">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-col>
@@ -79,7 +81,11 @@
         <!-- タグ列 -->
         <template #[`item.tags`]="{ item }">
           <div v-if="item.tags">
-            <v-chip class="mr-2" v-for="(tag, i) in item.tags.split(',')" :key="i">
+            <v-chip
+              class="mr-2"
+              v-for="(tag, i) in item.tags.split(',')"
+              :key="i"
+            >
               {{ tag }}
             </v-chip>
           </div>
@@ -93,19 +99,25 @@
           {{ separate(item.outgo) }}
         </template>
         <!-- 操作列 -->
-        <template v-slot:item.actions="{}">
-          <v-icon class="mr-2">mdi-pencil</v-icon>
+        <template v-slot:item.actions="{ item }">
+          <v-icon class="mr-2" @click="onClickEdit(item)">mdi-pencil</v-icon>
           <v-icon>mdi-delete</v-icon>
         </template>
       </v-data-table>
     </v-card>
+    <!-- 追加／編集ダイアログ -->
+    <ItemDialog ref="itemDialog" />
   </div>
 </template>
 
 <script>
+import ItemDialog from '../components/ItemDialog.vue'
+
 export default {
   name: 'Home',
-
+  components: {
+    ItemDialog,
+  },
   data() {
     const today = new Date()
     const year = today.getFullYear()
@@ -151,20 +163,55 @@ export default {
     /** テーブルのヘッダー設定 */
     tableHeaders() {
       return [
-        { text: '日付', value: 'date', align: 'end' },
-        { text: 'タイトル', value: 'title', sortable: false },
-        { text: 'カテゴリ', value: 'category', sortable: false },
-        { text: 'タグ', value: 'tags', sortable: false },
-        { text: '収入', value: 'income', align: 'end' },
-        { text: '支出', value: 'outgo', align: 'end' },
-        { text: 'メモ', value: 'memo', sortable: false },
-        { text: '操作', value: 'actions', sortable: false },
+        {
+          text: '日付',
+          value: 'date',
+          align: 'end',
+        },
+        {
+          text: 'タイトル',
+          value: 'title',
+          sortable: false,
+        },
+        {
+          text: 'カテゴリ',
+          value: 'category',
+          sortable: false,
+        },
+        {
+          text: 'タグ',
+          value: 'tags',
+          sortable: false,
+        },
+        {
+          text: '収入',
+          value: 'income',
+          align: 'end',
+        },
+        {
+          text: '支出',
+          value: 'outgo',
+          align: 'end',
+        },
+        {
+          text: 'メモ',
+          value: 'memo',
+          sortable: false,
+        },
+        {
+          text: '操作',
+          value: 'actions',
+          sortable: false,
+        },
       ]
     },
 
     /** テーブルのフッター設定 */
     footerProps() {
-      return { itemsPerPageText: '', itemsPerPageOptions: [] }
+      return {
+        itemsPerPageText: '',
+        itemsPerPageOptions: [],
+      }
     },
   },
 
@@ -174,7 +221,17 @@ export default {
      * 受け取った数が null のときは null を返します。
      */
     separate(num) {
-      return num !== null ? num.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,') : null
+      return num !== null
+        ? num.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+        : null
+    },
+    /** 追加ボタンがクリックされたとき */
+    onClickAdd() {
+      this.$refs.itemDialog.open('add')
+    },
+    /** 編集ボタンがクリックされたとき */
+    onClickEdit(item) {
+      this.$refs.itemDialog.open('edit', item)
     },
   },
 }
