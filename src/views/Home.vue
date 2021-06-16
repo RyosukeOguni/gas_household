@@ -108,22 +108,28 @@
           <v-icon class="mr-2" @click="onClickEdit(item)"
             >mdi-pencil</v-icon
           >
-          <v-icon>mdi-delete</v-icon>
+          <v-icon class="mr-2" @click="onClickDelete(item)"
+            >mdi-delete</v-icon
+          >
         </template>
       </v-data-table>
     </v-card>
     <!-- 追加／編集ダイアログ -->
     <ItemDialog ref="itemDialog" />
+    <!-- 削除ダイアログ -->
+    <DeleteDialog ref="deleteDialog" />
   </div>
 </template>
 
 <script>
 import ItemDialog from '../components/ItemDialog.vue'
+import DeleteDialog from '../components/DeleteDialog.vue'
 
 export default {
   name: 'Home',
   components: {
     ItemDialog,
+    DeleteDialog,
   },
   data() {
     const today = new Date()
@@ -239,6 +245,11 @@ export default {
     /** 編集ボタンがクリックされたとき */
     onClickEdit(item) {
       this.$refs.itemDialog.open('edit', item)
+    },
+    // ～省略
+    // 削除ボタンがクリックされたとき
+    onClickDelete(item) {
+      this.$refs.deleteDialog.open(item)
     },
   },
 }
