@@ -191,11 +191,11 @@ export default {
 
   methods: {
     ...mapActions([
-      /** データ追加 */
+      /** データ追加 データ更新 */
       'addAbData',
-      /** データ更新 */
       'updateAbData',
     ]),
+
     /**
      * ダイアログを表示します。
      * このメソッドは親から呼び出されます。
@@ -209,6 +209,7 @@ export default {
         this.beforeYM = item.date.slice(0, 7)
       }
     },
+
     /** キャンセルがクリックされたとき */
     onClickClose() {
       this.show = false
@@ -234,7 +235,6 @@ export default {
         item.id = this.id
         this.updateAbData({ beforeYM: this.beforeYM, item })
       }
-
       this.show = false
     },
 
@@ -247,6 +247,7 @@ export default {
       }
       this.category = this.categoryItems[0]
     },
+
     /** フォームの内容を初期化します */
     resetForm(item = {}) {
       const today = new Date()

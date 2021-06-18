@@ -209,6 +209,7 @@ export default {
        */
       'fetchAbData',
     ]),
+
     /** 表示させるデータを更新します */
     updateTable() {
       const yearMonth = this.yearMonth
@@ -227,6 +228,7 @@ export default {
       this.$refs.menu.save(this.yearMonth)
       this.updateTable()
     },
+
     /**
      * 数字を3桁区切りにして返します。
      * 受け取った数が null のときは null を返します。

@@ -58,8 +58,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'Settings',
+
   data() {
     const createItems = (v) =>
       v
@@ -92,9 +95,10 @@ export default {
   },
 
   methods: {
+    ...mapActions(['saveSettings']),
     /** 保存ボタンがクリックされたとき */
     onClickSave() {
-      this.$store.dispatch('saveSettings', { settings: this.settings })
+      this.saveSettings({ settings: this.settings })
     },
   },
 }
