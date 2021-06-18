@@ -85,20 +85,15 @@ export default {
       },
 
       /** バリデーションルール */
-      appNameRule: (v) =>
-        v.length <= 30 || '30文字以内で入力してください',
-      stringRule: (v) =>
-        v.length <= 150 || '150文字以内で入力してください',
+      appNameRule: (v) => v.length <= 30 || '30文字以内で入力してください',
+      stringRule: (v) => v.length <= 150 || '150文字以内で入力してください',
       categoryRules: [
+        (v) => createItems(v).length !== 0 || 'カテゴリは1つ以上必要です',
         (v) =>
-          createItems(v).length !== 0 || 'カテゴリは1つ以上必要です',
-        (v) =>
-          itemMaxLength(v) <= 4 ||
-          '各カテゴリは4文字以内で入力してください',
+          itemMaxLength(v) <= 4 || '各カテゴリは4文字以内で入力してください',
       ],
       tagRule: (v) =>
-        itemMaxLength(v) <= 4 ||
-        '各タグは4文字以内で入力してください',
+        itemMaxLength(v) <= 4 || '各タグは4文字以内で入力してください',
     }
   },
 

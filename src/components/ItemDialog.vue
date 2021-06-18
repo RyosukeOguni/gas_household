@@ -1,12 +1,6 @@
 <template>
   <!-- データ追加／編集ダイアログ -->
-  <v-dialog
-    v-model="show"
-    scrollable
-    persistent
-    max-width="500px"
-    eager
-  >
+  <v-dialog v-model="show" scrollable persistent max-width="500px" eager>
     <v-card>
       <v-card-title>{{ titleText }}</v-card-title>
       <v-divider />
@@ -41,13 +35,8 @@
               scrollable
             >
               <v-spacer />
-              <v-btn text color="grey" @click="menu = false"
-                >キャンセル</v-btn
-              >
-              <v-btn
-                text
-                color="primary"
-                @click="$refs.menu.save(date)"
+              <v-btn text color="grey" @click="menu = false">キャンセル</v-btn>
+              <v-btn text color="primary" @click="$refs.menu.save(date)"
                 >選択</v-btn
               >
             </v-date-picker>
@@ -176,14 +165,12 @@ export default {
         (v) => v.trim().length > 0 || 'タイトルは必須です',
         (v) => v.length <= 20 || '20文字以内で入力してください',
       ],
-      tagRule: (v) =>
-        v.length <= 5 || 'タグは5種類以内で選択してください',
+      tagRule: (v) => v.length <= 5 || 'タグは5種類以内で選択してください',
       amountRules: [
         (v) => v >= 0 || '金額は0以上で入力してください',
         (v) => Number.isInteger(v) || '整数で入力してください',
       ],
-      memoRule: (v) =>
-        v.length <= 50 || 'メモは50文字以内で入力してください',
+      memoRule: (v) => v.length <= 50 || 'メモは50文字以内で入力してください',
     }
   },
 

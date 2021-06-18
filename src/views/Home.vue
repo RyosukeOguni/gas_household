@@ -32,13 +32,8 @@
               scrollable
             >
               <v-spacer />
-              <v-btn text color="grey" @click="menu = false"
-                >キャンセル</v-btn
-              >
-              <v-btn
-                text
-                color="primary"
-                @click="$refs.menu.save(yearMonth)"
+              <v-btn text color="grey" @click="menu = false">キャンセル</v-btn>
+              <v-btn text color="primary" @click="$refs.menu.save(yearMonth)"
                 >選択</v-btn
               >
             </v-date-picker>
@@ -105,12 +100,8 @@
         </template>
         <!-- 操作列 -->
         <template v-slot:item.actions="{ item }">
-          <v-icon class="mr-2" @click="onClickEdit(item)"
-            >mdi-pencil</v-icon
-          >
-          <v-icon class="mr-2" @click="onClickDelete(item)"
-            >mdi-delete</v-icon
-          >
+          <v-icon class="mr-2" @click="onClickEdit(item)">mdi-pencil</v-icon>
+          <v-icon class="mr-2" @click="onClickDelete(item)">mdi-delete</v-icon>
         </template>
       </v-data-table>
     </v-card>
