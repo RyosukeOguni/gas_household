@@ -16,6 +16,7 @@
     </v-app-bar>
     <!-- メインコンテンツ -->
     <v-main>
+      <!-- fluidを付けると左右いっぱいに画面をとる -->
       <v-container fluid>
         <!-- router-view の中身がパスによって切り替わる -->
         <router-view></router-view>

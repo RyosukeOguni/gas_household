@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+// API通信をまとめたモジュールの読込
 import gasApi from '../api/gasApi'
 
 Vue.use(Vuex)
@@ -207,7 +208,11 @@ const actions = {
   },
 }
 
-/** カンマ区切りの文字をトリミングして配列にします */
+/** カンマ区切りのカテゴリやタグをトリミングして配列にします
+ * １．文字列を配列に変換
+ * ２．mapで配列要素の全てに対して、スペースや空文字を削除
+ * ３．配列要素が空のものをfilterで弾いて配列化する
+ */
 const createItems = (v) =>
   v
     .split(',')

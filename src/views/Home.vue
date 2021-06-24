@@ -64,6 +64,10 @@
               </table>
             </div>
             <div v-for="category in sum.categories" :key="category[0]">
+              <!-- 進捗状況やパーセンテージを表示する
+                    :rotate = グラフの起点（-90で頂点から開始）
+                    :value = グラフの起点（-90で頂点から開始）
+              -->
               <v-progress-circular
                 class="mr-2"
                 :rotate="-90"
@@ -238,6 +242,7 @@ export default {
       let outgo = 0
       const categoryOutgo = {}
       const categories = []
+
       // 収支の合計とカテゴリ別の支出を計算
       for (const row of this.tableData) {
         if (row.income !== null) {
@@ -304,11 +309,11 @@ export default {
         ? num.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
         : null
     },
-    /** 追加ボタンがクリックされたとき */
+    /** 追加ボタンがクリックされたとき、$refsでitemDialog内のopen()を起動 */
     onClickAdd() {
       this.$refs.itemDialog.open('add')
     },
-    /** 編集ボタンがクリックされたとき */
+    /** 編集ボタンがクリックされたとき、$refsでitemDialog内のopen()を起動 */
     onClickEdit(item) {
       this.$refs.itemDialog.open('edit', item)
     },

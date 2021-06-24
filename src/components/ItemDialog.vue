@@ -123,7 +123,7 @@ export default {
 
   data() {
     return {
-      /** ダイアログの表示状態 */
+      /** ダイアログの表示状態、open()でtrue、onClickClose()でfalse */
       show: false,
       /** 入力したデータが有効かどうか */
       valid: false,
@@ -210,6 +210,7 @@ export default {
       this.resetForm(item)
 
       if (actionType === 'edit') {
+        // 編集の時のみ、編集前の年月日(2021-07-21)を(2021-07)にしてキープしておく
         this.beforeYM = item.date.slice(0, 7)
       }
     },
@@ -234,7 +235,7 @@ export default {
       item[this.inout] = this.amount || 0
 
       if (this.actionType === 'add') {
-        //新規登録の場合
+        //追加の場合
         await this.addAbData({ item })
       } else {
         //更新の場合
@@ -245,7 +246,7 @@ export default {
       this.show = false
     },
 
-    /** 収支が切り替わったとき */
+    /** 収支が切り替わったとき、カテゴリ項目を入れ替えて、最初を表示 */
     onChangeInout() {
       if (this.inout === 'income') {
         this.categoryItems = this.incomeItems
@@ -255,30 +256,42 @@ export default {
       this.category = this.categoryItems[0]
     },
 
-    /** フォームの内容を初期化します */
+    /** モーダルが開かれたとき、フォームの内容を初期化します */
     resetForm(item = {}) {
+      // 今年を表す4桁の数字を取得
       const today = new Date()
       const year = today.getFullYear()
+      // today.getMonth()は0～11で取得されるので注意！
+      // もし1月の場合、0+1に'0'を頭に付けて、'001'。後ろから2文字でカットして、'01'
+      // もし12月の場合、11+1に'0'を頭に付けて、'012'。後ろから2文字でカットして、'12'
       const month = ('0' + (today.getMonth() + 1)).slice(-2)
+      // today.getDate()は日にち通り取得。1桁台は同じ仕組みで頭に1を付ける
       const date = ('0' + today.getDate()).slice(-2)
 
+      // Homeのテーブルでitem in itemsされた1行分のオブジェクト
+      // 更新の場合、入力値があればそれを表示。追加の場合、空文字または本日の日付など初期値を入れる
       this.id = item.id || ''
       this.date = item.date || `${year}-${month}-${date}`
       this.title = item.title || ''
+      // 収入に値があればincome(収入)、なければoutgo(支出)
       this.inout = item.income != null ? 'income' : 'outgo'
 
       if (this.inout === 'income') {
+        // 収入の場合、categoryItemsに収入カテゴリのタグが入り、収入金額があれば入る
         this.categoryItems = this.incomeItems
         this.amount = item.income || 0
       } else {
+        // 支出の場合、categoryItemsに支出カテゴリのタグが入り、支出金額があれば入る
         this.categoryItems = this.outgoItems
         this.amount = item.outgo || 0
       }
 
+      // カテゴリに入力があればそれを、無ければ各カテゴリの先頭が入る
       this.category = item.category || this.categoryItems[0]
+      // タグがあれば','で配列に区切る、無ければ空配列
       this.tags = item.tags ? item.tags.split(',') : []
       this.memo = item.memo || ''
-
+      // vuetifyの持つv-formのresetValidation()が起動し、バリデーション内容をリセットする
       this.$refs.form.resetValidation()
     },
   },
